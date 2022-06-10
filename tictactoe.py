@@ -23,7 +23,7 @@ class self_demo:
 		self.score = 0
 		self.episode = 0
 
-		# Turn = 0: Black, 1: White
+		# Turn = 0: A, 1: B
 		self.turn = 0
 
 		self.Num_spot = int(np.sqrt(self.Num_action))
@@ -61,7 +61,7 @@ class self_demo:
 				for i in range(self.num_MCTS_iteration):
 					leafnode_id = self.MCTS_search(MCTS_node, MCTS_edge)
 					MCTS_node, MCTS_edge, update_node_id = self.MCTS_expand(MCTS_node, MCTS_edge, leafnode_id)
-					# sim_result: 1 = O win, 2 = X win, 3 = Draw
+					# sim_result: 1 = A win, 2 = B win, 3 = Draw
 					sim_result = self.MCTS_simulation(MCTS_node, MCTS_edge, update_node_id)
 					MCTS_node, MCTS_edge = self.MCTS_backup(MCTS_node, MCTS_edge, update_node_id, sim_result)
 					count += 1
@@ -234,27 +234,27 @@ class self_demo:
 
 	# Check win
 	def check_win(self, gameboard, num_mark):
-		# Check four stones in a row (Horizontal)
+		# Check three stones in a row (Horizontal)
 		for row in range(self.GAMEBOARD_SIZE ):
 		    for col in range(self.GAMEBOARD_SIZE  - self.WIN_MARK + 1):
-		        # Black win!
+		        # A win!
 		        if np.sum(gameboard[row, col:col + self.WIN_MARK]) == self.WIN_MARK:
 		            return 1
-		        # White win!
+		        # B win!
 		        if np.sum(gameboard[row, col:col + self.WIN_MARK]) == -self.WIN_MARK:
 		            return 2
 
-		# Check four stones in a colum (Vertical)
+		# Check three stones in a colum (Vertical)
 		for row in range(self.GAMEBOARD_SIZE  - self.WIN_MARK + 1):
 		    for col in range(self.GAMEBOARD_SIZE ):
-		        # Black win!
+		        # A win!
 		        if np.sum(gameboard[row : row + self.WIN_MARK, col]) == self.WIN_MARK:
 		            return 1
-		        # White win!
+		        # B win!
 		        if np.sum(gameboard[row : row + self.WIN_MARK, col]) == -self.WIN_MARK:
 		            return 2
 
-		# Check four stones in diagonal (Diagonal)
+		# Check three stones in diagonal (Diagonal)
 		for row in range(self.GAMEBOARD_SIZE  - self.WIN_MARK + 1):
 		    for col in range(self.GAMEBOARD_SIZE  - self.WIN_MARK + 1):
 		        count_sum = 0
@@ -264,11 +264,11 @@ class self_demo:
 		            if gameboard[row + i, col + i] == -1:
 		                count_sum -= 1
 
-		        # Black Win!
+		        # A Win!
 		        if count_sum == self.WIN_MARK:
 		            return 1
 
-		        # White WIN!
+		        # B WIN!
 		        if count_sum == -self.WIN_MARK:
 		            return 2
 
@@ -281,11 +281,11 @@ class self_demo:
 		            if gameboard[row - i, col + i] == -1:
 		                count_sum -= 1
 
-		        # Black Win!
+		        # A Win!
 		        if count_sum == self.WIN_MARK:
 		            return 1
 
-		        # White WIN!
+		        # B WIN!
 		        if count_sum == -self.WIN_MARK:
 		            return 2
 
